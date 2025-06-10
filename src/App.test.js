@@ -1,8 +1,14 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+// src/App.js
+import React from 'react';
+import NewsScraper from './components/NewsScraper';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+function App() {
+  return (
+    <div className="App">
+      <NewsScraper />
+    </div>
+  );
+}
+
+export default App;
