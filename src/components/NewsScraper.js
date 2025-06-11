@@ -51,111 +51,26 @@ const NewsScraper = () => {
         setArticles(data.articles);
       } else {
         setError('No articles found. Try adjusting the CSS selectors.');
-        loadDemoArticles();
       }
     } catch (err) {
       console.error('Scraping error:', err);
       setError('Failed to scrape news articles. Make sure your backend server is running.');
-      
-      // Fallback: Load demo articles to show functionality
-      loadDemoArticles();
     } finally {
       setLoading(false);
     }
   };
 
-  const loadDemoArticles = () => {
-    const demoArticles = [
-      {
-        id: 1,
-        title: "Breaking: Revolutionary AI Technology Unveiled at Global Summit",
-        summary: "Leading tech companies reveal collaborative AI research results that could revolutionize healthcare and education sectors worldwide, promising unprecedented capabilities.",
-        source: "Demo News",
-        publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-        url: "#",
-        category: "Technology",
-        readTime: "4 min read"
-      },
-      {
-        id: 2,
-        title: "International Climate Accord Reaches Historic Milestone",
-        summary: "Environmental leaders from 50 countries commit to ambitious carbon reduction targets in groundbreaking climate agreement, setting new global standards.",
-        source: "Demo News",
-        publishedAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-        url: "#",
-        category: "World",
-        readTime: "6 min read"
-      },
-      {
-        id: 3,
-        title: "Medical Breakthrough Shows Promise in Clinical Trials",
-        summary: "New revolutionary treatment demonstrates significant success rates in treating chronic conditions, offering hope to millions of patients worldwide.",
-        source: "Demo News",
-        publishedAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
-        url: "#",
-        category: "Health",
-        readTime: "5 min read"
-      },
-      {
-        id: 4,
-        title: "Global Markets React to Economic Policy Changes",
-        summary: "Stock markets worldwide show positive response to new economic policies, with analysts predicting sustained growth in key sectors.",
-        source: "Demo News",
-        publishedAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
-        url: "#",
-        category: "Business",
-        readTime: "3 min read"
-      },
-      {
-        id: 5,
-        title: "Space Exploration Mission Achieves New Milestone",
-        summary: "Groundbreaking space mission successfully completes critical phase, paving the way for future interplanetary exploration and scientific discoveries.",
-        source: "Demo News",
-        publishedAt: new Date(Date.now() - 10 * 60 * 60 * 1000).toISOString(),
-        url: "#",
-        category: "Technology",
-        readTime: "7 min read"
-      },
-      {
-        id: 6,
-        title: "Educational Reform Initiative Shows Promising Results",
-        summary: "Comprehensive educational program demonstrates significant improvements in student outcomes across multiple districts nationwide.",
-        source: "Demo News",
-        publishedAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
-        url: "#",
-        category: "General",
-        readTime: "5 min read"
-      },
-      {
-        id: 7,
-        title: "Renewable Energy Sector Reaches Production Record",
-        summary: "Clean energy initiatives achieve unprecedented output levels, contributing significantly to sustainable power generation goals.",
-        source: "Demo News",
-        publishedAt: new Date(Date.now() - 14 * 60 * 60 * 1000).toISOString(),
-        url: "#",
-        category: "World",
-        readTime: "4 min read"
-      },
-      {
-        id: 8,
-        title: "Sports Championship Delivers Record-Breaking Viewership",
-        summary: "Major sporting event attracts global audience, setting new standards for international sports broadcasting and engagement.",
-        source: "Demo News",
-        publishedAt: new Date(Date.now() - 16 * 60 * 60 * 1000).toISOString(),
-        url: "#",
-        category: "Sports",
-        readTime: "3 min read"
-      }
-    ];
-    
-    setArticles(demoArticles);
-  };
+
 
   const filteredAndSortedArticles = useMemo(() => {
     let filtered = articles.filter(article => {
-      const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           article.summary.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesSearch;
+      if (!searchTerm.trim()) return true;
+      
+      const searchLower = searchTerm.toLowerCase().trim();
+      const titleLower = article.title.toLowerCase();
+      
+      // Check if title starts with the search term
+      return titleLower.startsWith(searchLower);
     });
 
     if (sortBy === 'date') {
